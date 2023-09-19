@@ -1,0 +1,85 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+
+    <style>
+      .navbar{
+        height: 100px;
+        min-width: 1500px;
+        margin: 0;
+        padding: 0;
+        background-color: antiquewhite;
+      }
+      .mylogo{
+        /* background: url(../static/images/mylogo.jpg); */
+        background: black;
+        height: 100px;
+        width: 100px;
+        padding-left: 0px;
+        margin-left: 0px;
+        overflow: hidden;
+      }
+    .mylogo img{
+      width: 100%;
+      object-fit:cover;
+      /* z-index: ; */
+      position: relative;
+    }
+    .mylogo a{
+      /* background-color: red; */
+      position: absolute;
+      /* z-index: 3; */
+      top: 100;
+      left: 10;
+    }
+    .mylogo a img{
+      /* z-index: 10; */
+      width: 20%;
+      
+    }
+    </style>
+</head>
+<body>
+    
+
+<!-- navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <div class="mylogo">
+        <img src="../static/images/mylogo.jpg" alt="">
+        <a class="navbar-brand" href="#">
+          <img src="../static/images/simbal.jpeg" alt="">
+        </a>
+      </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          
+        </ul>
+        <span class="navbar-text ">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_login">Log In</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/user_logout">Log Out</a>
+                  </li>
+            </ul>
+            
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
