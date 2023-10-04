@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Buy Products| Ishop </title>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../static/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="../static/footer.css"> -->
+
+
+    <script src="../static/index.js"></script>
+
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <script src="../static/js/bootstrap.js"></script>
+
+    <style>
+        .procol{
+            margin: 30px auto;
+            padding: 20px auto;
+            /* background-color: red; */
+        }
+        .procard{
+            justify-content: center;
+            align-items: center;
+            padding: 10px auto;
+            margin: 30px auto;
+            background-color: black;
+        }
+        .prodiv{
+            height: 200px;
+            width: 200px;
+            background-color: pink;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        .prodiv img{
+            object-fit: cover;
+            min-height: 250px;
+            min-width: 100%;
+        }
+    </style>
+
+</head>
+
+
+<body>
+    <header>
+        {%include 'navbar.html'%}
+    </header>
+
+    <div class="container bg-info pt-2">
+        <h3 class="bg-warning p-3 mt-2 text-white">Latests Phones</h3>
+        <section class="row">
+            {% for phone in phones %}
+            <div class="col-md-4 procol">
+                <div class="card shadow my-2 procard">
+
+                    <div class="prodiv">
+                        <img src="../static/products/{{phone[8]}}">
+                    </div>
+                    <h4 class="text-center text-danger">{{phone[2]}}</h4>
+                    <p class="badge bg-warning text-center">{{phone[3]}}</p>
+                    <h5 class="text-center">Kshs {{phone[4]}}</h5>
+                    <a href="/single_item/{{phones[0]}}" class="btn btn-success">View Product</a>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </section>
+        <br>
+
+        <h3 class="bg-warning p-3 mt-2 text-white">computer Deals!</h3>
+        <section class="row">
+            {% for computer in laptops %}
+            <div class="col-md-4 procol">
+                <div class="card shadow my-2 procard">
+
+                    <div class="prodiv">
+                        <img src="../static/products/{{computer[8]}}">
+                    </div>
+                    
+                    <h4 class="text-center text-danger">{{computer[2]}}</h4>
+                    <p class="badge bg-warning text-center">{{computer[3]}}</p>
+                    <h5 class="text-center">Kshs {{computer[4]}}</h5>
+
+                    <a href="/single_item/{{computer[0]}}" class="btn btn-success">View Product</a>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </section>
+
+        <h3 class="bg-warning p-3 mt-2 text-white">Shoe Deals!</h3>
+        <section class="row">
+            {% for shoe in shoes %}
+            <div class="col-md-4 procol">
+                <div class="card shadow my-2 procard">
+
+                    <div class="prodiv">
+                        <img src="../static/products/{{shoe[8]}}">
+                    </div>
+                    
+                    <h4 class="text-center text-danger">{{shoe[2]}}</h4>
+                    <p class="badge bg-warning text-center">{{shoe[3]}}</p>
+                    <h5 class="text-center">Kshs {{shoe[4]}}</h5>
+
+                    <a href="/single_item/{{shoe[0]}}" class="btn btn-success">View Product</a>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </section>
+
+    </div>
+    <section>
+        {%include 'footer.html'%}
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+
+</html>
