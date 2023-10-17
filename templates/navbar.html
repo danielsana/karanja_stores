@@ -8,15 +8,16 @@
 
     <style>
       .navbar{
+        /* position: fixed; */
         height: 100px;
-        min-width: 1500px;
+        min-width: 100%;
         margin: 0;
         padding: 0;
-        background-color: antiquewhite;
+        background-color:#fff;
       }
       .mylogo{
-        /* background: url(../static/images/mylogo.jpg); */
-        background: black;
+        background: url(../static/images/simbal.jpg);
+        /* background: black; */
         height: 100px;
         width: 100px;
         padding-left: 0px;
@@ -24,7 +25,9 @@
         overflow: hidden;
       }
     .mylogo img{
-      width: 100%;
+      min-width: 100%;
+      height: 80px;
+      margin-top: 10px;
       object-fit:cover;
       /* z-index: ; */
       position: relative;
@@ -50,7 +53,7 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <div class="mylogo">
-        <img src="../static/images/mylogo.jpg" alt="">
+        <!-- <img src="../static/images/mylogo.jpg" alt=""> -->
         <a class="navbar-brand" href="#">
           <img src="../static/images/simbal.jpeg" alt="">
         </a>
