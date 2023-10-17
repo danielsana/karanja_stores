@@ -187,5 +187,31 @@ def buy_products():
 
     return render_template('buy_products.html', phones=phones, laptops=computers, shoes=shoes)
 
+@app.route('/single_item/<product_id>')
+def single_item(product_id):
+    connection = pymysql.connect(
+            host='localhost', user='root', password='', database='karanja_eshop')
+    
+    cursor = connection.cursor()
+
+    sql = "select * from products where product_id = %s"
+
+    cursor.execute(sql,product_id)
+
+    single_record = cursor.fetchone()
+
+    category = single_record[6]
+
+    cursor_similar = connection.cursor()
+
+    sql_similar = "select * from products where product_category = %s ORDER BY RAND() LIMIT 3"
+
+    cursor_similar.execute(sql_similar,category)
+
+    similar_products = cursor_similar.fetchall()
+
+    return render_template('single_item.html', single_record=single_record,similar_products=similar_products)
+
+
 
 app.run(debug=True)
