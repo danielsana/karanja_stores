@@ -140,6 +140,42 @@ def view_products():
         data = cursor.fetchall()
         return render_template('view_products.html', products = data) 
     
+    
+@app.route('/update/<product_id>', methods = ['POST','GET'])
+def update_product(product_id):
+    if request.method == 'POST':
+        product_name = request.form['name']
+        product_desc = request.form['desc']
+        product_cost = request.form['cost']
+        product_discount = request.form['discount']
+        product_category = request.form['category']
+        product_brand = request.form['brand']
+        product_image = request.files['image']
+        product_image.save('static/products/' + product_image.filename)
+
+        vendor_id = request.form['vendor']
+        
+        connection = pymysql.connect(
+            host='localhost', user='root', password='', database='simba_eshop')
+        cursor = connection.cursor()
+        sql = "update products set product_name = %s, product_desc=%s, product_cost = %s, product_discount = %s, product_category = %s, product_brand = %s, product_image = %s where product_id = %s"
+
+        cursor.execute(sql,(product_name,product_desc,product_cost,product_discount,product_category,product_brand,product_image.filename,product_id))
+
+        connection.commit()
+
+        return redirect('/view_products')
+    else:
+        connection = pymysql.connect(
+            host='localhost', user='root', password='', database='karanja_eshop')
+        
+        cursor = connection.cursor()
+        sql = "select * from products where product_id = %s"
+        cursor.execute(sql,product_id)
+        data = cursor.fetchone()
+        return render_template('update.html', data=data)
+    
+    
 @app.route('/user_register',methods = ['POST','GET'])
 def user_register():
     if request.method == 'POST':
@@ -162,6 +198,97 @@ def user_register():
     else:
         return render_template('user_register.html', message = 'Register here')
     
+@app.route('/user_login', methods = ['POST','GET'])
+def user_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        connection = pymysql.connect(
+            host='localhost', user='root', password='', database='karanja_eshop')
+        
+        cursor = connection.cursor()
+
+        sql = 'select * from users where username = %s and password = %s'
+
+        cursor.execute(sql,(username,password))
+
+        count = cursor.rowcount
+        if count == 0:
+            return render_template('user_login.html', message = 'invalid credentials')
+        else:
+            user_record = cursor.fetchone()
+            session['user_key'] = user_record[0]
+            session['phone'] = user_record[1]
+        
+            return redirect('/buy_products')
+    else:
+        return render_template('user_login.html', message= 'Please login here')
+    
+
+@app.route('/user_logout')
+def user_logout():
+    if 'user_key' in session:
+        session.clear()
+    return redirect('/user_login')
+
+
+import requests
+import datetime
+import base64
+from requests.auth import HTTPBasicAuth
+
+@app.route('/payment', methods=['POST', 'GET'])
+def mpesa_payment():
+    if request.method == 'POST':
+        phone = str(request.form['phone'])
+        amount = str(request.form['amount'])
+        # GENERATING THE ACCESS TOKEN
+        consumer_key = "GTWADFxIpUfDoNikNGqq1C3023evM6UH"
+        consumer_secret = "amFbAoUByPV2rM5A"
+
+        api_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"  # AUTH URL
+        r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
+
+        data = r.json()
+        access_token = "Bearer" + ' ' + data['access_token']
+
+        #  GETTING THE PASSWORD
+        timestamp = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
+        passkey = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+        business_short_code = "174379"
+        data = business_short_code + passkey + timestamp
+        encoded = base64.b64encode(data.encode())
+        password = encoded.decode('utf-8')
+
+        # BODY OR PAYLOAD
+        payload = {
+            "BusinessShortCode": "174379",
+            "Password": "{}".format(password),
+            "Timestamp": "{}".format(timestamp),
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": "10",  # use 1 when testing
+            "PartyA": phone,  # change to your number
+            "PartyB": "174379",
+            "PhoneNumber": phone,
+            "CallBackURL": "https://modcom.co.ke/job/confirmation.php",
+            "AccountReference": "Modcom",
+            "TransactionDesc": "Modcom"
+        }
+
+        # POPULAING THE HTTP HEADER
+        headers = {
+            "Authorization": access_token,
+            "Content-Type": "application/json"
+        }
+
+        url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"  # C2B URL
+
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.text)
+        return "Please check YOur Phone to complete payment"
+    else:
+        return render_template('single_item.html')
 @app.route('/buy_products')
 def buy_products():
     connection = pymysql.connect(
